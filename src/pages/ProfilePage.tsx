@@ -6,7 +6,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -90,6 +91,20 @@ export const ProfilePage = () => {
                         </div>
                         <ThemeToggle />
                     </div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader className="pb-3">
+                    <CardTitle className="text-base">
+                        Legal
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-0">
+                    <Link to="/profile/privacy-policy" className="flex items-center justify-between py-2 hover:bg-muted/50 rounded-md transition-colors group">
+                        <span className="text-sm font-medium">Privacy Policy</span>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    </Link>
                 </CardContent>
             </Card>
         </div>

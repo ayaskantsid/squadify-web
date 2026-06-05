@@ -10,6 +10,7 @@ import { InvitationsPage } from "./pages/InvitationsPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { CreateTripPage } from "./pages/CreateTripPage";
 import { TripDetailsPage } from "./pages/TripDetailsPage";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -41,6 +42,10 @@ function App() {
                     <Route
                         path="/profile"
                         element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/profile/privacy-policy"
+                        element={<PrivacyPolicyPage />}
                     />
                     <Route
                         path="/trips/new"
