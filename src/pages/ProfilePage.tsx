@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { LogOut, User } from "lucide-react";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const ProfilePage = () => {
     const { squadifyUser, firebaseUser, logout } = useAuth();
@@ -72,6 +73,23 @@ export const ProfilePage = () => {
                         <LogOut className="h-4 w-4 mr-2" />
                         Sign Out
                     </Button>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader className="pb-3">
+                    <CardTitle className="text-base">
+                        Preferences
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col space-y-1">
+                            <span className="text-sm font-medium leading-none">Theme</span>
+                            <span className="text-xs text-muted-foreground">Toggle light or dark mode.</span>
+                        </div>
+                        <ThemeToggle />
+                    </div>
                 </CardContent>
             </Card>
         </div>
