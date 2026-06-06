@@ -10,13 +10,13 @@ import type { User as FirebaseUser } from "firebase/auth";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { loginWithGoogle as firebaseLoginWithGoogle } from "./googleAuth";
-import type { SquadifyUser } from "@/types/user";
+import type { SquadfishUser } from "@/types/user";
 import { initUser } from "@/api/auth";
 import { toast } from "sonner";
 
 type AuthContextType = {
     firebaseUser: FirebaseUser | null;
-    squadifyUser: SquadifyUser | null;
+    squadfishUser: SquadfishUser | null;
     isAuthenticated: boolean;
     isLoading: boolean;
     loginWithGoogle: () => Promise<void>;
@@ -25,7 +25,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
     firebaseUser: null,
-    squadifyUser: null,
+    squadfishUser: null,
     isAuthenticated: false,
     isLoading: true,
     loginWithGoogle: async () => {},
@@ -38,7 +38,7 @@ export const AuthProvider = ({
     children: React.ReactNode;
 }) => {
     const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
-    const [squadifyUser, setSquadifyUser] = useState<SquadifyUser | null>(null);
+    const [squadfishUser, setSquadfishUser] = useState<SquadfishUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const queryClient = useQueryClient();
@@ -52,13 +52,13 @@ export const AuthProvider = ({
                     // Make sure we have the token available for apiClient
                     await fbUser.getIdToken();
                     const sqUser = await initUser(fbUser.displayName);
-                    setSquadifyUser(sqUser);
+                    setSquadfishUser(sqUser);
                 } catch (error) {
                     console.error("Failed to initialize user with backend:", error);
                     toast.error("Failed to load user profile. Please try refreshing.");
                 }
             } else {
-                setSquadifyUser(null);
+                setSquadfishUser(null);
             }
             setIsLoading(false);
         });
@@ -91,8 +91,8 @@ export const AuthProvider = ({
         <AuthContext.Provider
             value={{
                 firebaseUser,
-                squadifyUser,
-                isAuthenticated: !!squadifyUser,
+                squadfishUser,
+                isAuthenticated: !!squadfishUser,
                 isLoading,
                 loginWithGoogle,
                 logout,

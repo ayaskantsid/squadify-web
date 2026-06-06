@@ -1,4 +1,4 @@
-export type SquadifyUser = {
+export type SquadfishUser = {
     _id: string;
     firebaseUid: string;
     email: string;

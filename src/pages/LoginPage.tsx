@@ -34,8 +34,8 @@ const GoogleIcon = () => (
     </svg>
 );
 
-/** Squadify "S" logo icon. */
-const SquadifyLogo = () => (
+/** Squadfish "S" logo icon. */
+const SquadfishLogo = () => (
     <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -117,12 +117,12 @@ export const LoginPage = () => {
 
                 {/* Logo */}
                 <div className="login-logo">
-                    <SquadifyLogo />
+                    <SquadfishLogo />
                 </div>
 
                 {/* Title */}
                 <h1 className="login-title">
-                    Squadify
+                    Squadfish
                 </h1>
                 <p className="login-subtitle">
                     Split expenses effortlessly with your squad

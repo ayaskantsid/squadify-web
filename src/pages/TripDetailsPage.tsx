@@ -26,7 +26,7 @@ import type { AxiosError } from "axios";
 export const TripDetailsPage = () => {
     const { tripId } = useParams<{ tripId: string }>();
     const navigate = useNavigate();
-    const { squadifyUser } = useAuth();
+    const { squadfishUser } = useAuth();
 
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -63,7 +63,7 @@ export const TripDetailsPage = () => {
 
     // --- Derived state ---
     const isAdmin = participants?.some(
-        (p) => p.userId?._id === squadifyUser?._id && p.role === "admin"
+        (p) => p.userId?._id === squadfishUser?._id && p.role === "admin"
     ) ?? false;
 
     const acceptedParticipants = participants?.filter((p) => p.status === "accepted") ?? [];
@@ -229,7 +229,7 @@ export const TripDetailsPage = () => {
                                 key={p._id}
                                 participant={p}
                                 isAdmin={isAdmin}
-                                currentUserId={squadifyUser?._id}
+                                currentUserId={squadfishUser?._id}
                                 onRemove={handleRemoveParticipant}
                                 isRemoving={removeMutation.isPending}
                             />
@@ -244,7 +244,7 @@ export const TripDetailsPage = () => {
                                         key={p._id}
                                         participant={p}
                                         isAdmin={isAdmin}
-                                        currentUserId={squadifyUser?._id}
+                                        currentUserId={squadfishUser?._id}
                                         onRemove={handleRemoveParticipant}
                                         isRemoving={removeMutation.isPending}
                                     />
@@ -300,7 +300,7 @@ export const TripDetailsPage = () => {
                                 key={expense._id}
                                 expense={expense}
                                 participants={participants ?? []}
-                                currentUserId={squadifyUser?._id}
+                                currentUserId={squadfishUser?._id}
                                 isAdmin={isAdmin}
                                 onDelete={handleDeleteExpense}
                                 isDeleting={deleteExpenseMutation.isPending}

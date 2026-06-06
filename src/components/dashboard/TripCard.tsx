@@ -24,9 +24,9 @@ const formatDate = (dateStr: string) => {
 
 export const TripCard = ({ trip }: TripCardProps) => {
     const navigate = useNavigate();
-    const { squadifyUser } = useAuth();
+    const { squadfishUser } = useAuth();
 
-    const isCreator = trip.createdBy === squadifyUser?._id;
+    const isCreator = trip.createdBy === squadfishUser?._id;
 
     return (
         <Card

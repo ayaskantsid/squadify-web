@@ -10,10 +10,10 @@ export const DashboardHeader = ({
     tripCount,
     isLoading,
 }: DashboardHeaderProps) => {
-    const { squadifyUser } = useAuth();
+    const { squadfishUser } = useAuth();
 
     const firstName =
-        squadifyUser?.displayName?.split(" ")[0] ?? "there";
+        squadfishUser?.displayName?.split(" ")[0] ?? "there";
 
     if (isLoading) {
         return (

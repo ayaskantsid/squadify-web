@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# Squadfish
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Squadfish is a modern trip expense-sharing application designed to help you split costs effortlessly with your friends.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Secure Authentication:** Seamless login via Google using Firebase Authentication.
+- **Trip Management:** Create trips, manage details, and invite participants.
+- **Expense Tracking:** Add, view, and manage shared expenses within a trip.
+- **Role-Based Access Control:** Trip creators become admins with the ability to manage participants and delete trips.
+- **Settlement Summaries:** Instantly see who owes what and keep track of balances.
+- **Modern UI:** Built with Tailwind CSS and shadcn/ui, featuring a premium responsive design with dark mode support.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework:** React + TypeScript (Vite)
+- **State & Data Fetching:** TanStack Query (React Query)
+- **Routing:** React Router
+- **Styling:** Tailwind CSS + shadcn/ui
+- **Forms & Validation:** React Hook Form + Zod
+- **Authentication:** Firebase Auth
+- **API Client:** Axios
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js (v18 or higher)
+- A Firebase project with Google Authentication enabled
+- The Squadfish Backend running locally or deployed.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ayaskantsid/squadfish-web.git
+   cd squadfish-web
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Configure environment variables:
+   Create a `.env.local` or `.env.development` file in the root directory:
+   ```env
+   VITE_API_URL=http://localhost:5000
+   VITE_FIREBASE_API_KEY=your_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+   VITE_FIREBASE_APP_ID=your_app_id
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Deployment
+
+This application is configured for seamless deployment on [Vercel](https://vercel.com). Simply import the repository, select the Vite framework preset, and add your environment variables.

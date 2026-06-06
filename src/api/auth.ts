@@ -1,8 +1,8 @@
 import api from "./apiClient";
-import type { SquadifyUser } from "@/types/user";
+import type { SquadfishUser } from "@/types/user";
 
-export const initUser = async (displayName?: string | null): Promise<SquadifyUser> => {
-    const response = await api.post<SquadifyUser>("/api/auth/me", {
+export const initUser = async (displayName?: string | null): Promise<SquadfishUser> => {
+    const response = await api.post<SquadfishUser>("/api/auth/me", {
         displayName,
     });
     return response.data;

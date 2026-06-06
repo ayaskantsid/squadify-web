@@ -2,9 +2,9 @@
 trigger: always_on
 ---
 
-# Squadify Frontend Rules
+# Squadfish Frontend Rules
 
-Build a production-ready React frontend for Squadify using the backend API documented in this project.
+Build a production-ready React frontend for Squadfish using the backend API documented in this project.
 
 ## Tech Stack
 

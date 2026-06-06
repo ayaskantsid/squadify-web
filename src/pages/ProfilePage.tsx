@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const ProfilePage = () => {
-    const { squadifyUser, firebaseUser, logout } = useAuth();
+    const { squadfishUser, firebaseUser, logout } = useAuth();
 
     const handleLogout = async () => {
         try {
@@ -45,7 +45,7 @@ export const ProfilePage = () => {
                             <img
                                 src={firebaseUser.photoURL}
                                 alt={
-                                    squadifyUser?.displayName ??
+                                    squadfishUser?.displayName ??
                                     "Avatar"
                                 }
                                 className="h-12 w-12 rounded-full object-cover"
@@ -57,11 +57,11 @@ export const ProfilePage = () => {
                         )}
                         <div className="min-w-0">
                             <p className="font-medium text-foreground truncate">
-                                {squadifyUser?.displayName ??
+                                {squadfishUser?.displayName ??
                                     "User"}
                             </p>
                             <p className="text-sm text-muted-foreground truncate">
-                                {squadifyUser?.email}
+                                {squadfishUser?.email}
                             </p>
                         </div>
                     </div>

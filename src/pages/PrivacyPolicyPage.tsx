@@ -15,12 +15,12 @@ export const PrivacyPolicyPage = () => {
             <Card>
                 <CardContent className="pt-6 text-sm text-foreground space-y-6 leading-relaxed">
                     <p>
-                        Welcome to Squadify. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our application.
+                        Welcome to Squadfish. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our application.
                     </p>
 
                     <div className="space-y-2">
                         <h2 className="text-lg font-semibold tracking-tight">1. Information We Collect</h2>
-                        <p>When you use Squadify, we may collect the following information:</p>
+                        <p>When you use Squadfish, we may collect the following information:</p>
                         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
                             <li><strong>Account Information:</strong> Name, Email address, Profile picture (if provided through Google Sign-In)</li>
                             <li><strong>Trip Information:</strong> Trip names and descriptions, Participant information added to trips, Expense records entered by users, Expense split details and balances</li>
@@ -49,7 +49,7 @@ export const PrivacyPolicyPage = () => {
                         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
                             <li>With participants of trips you join or create</li>
                             <li>When required by law or legal process</li>
-                            <li>To protect the security and integrity of Squadify</li>
+                            <li>To protect the security and integrity of Squadfish</li>
                             <li>With trusted service providers that help us operate the application</li>
                         </ul>
                     </div>
@@ -67,7 +67,7 @@ export const PrivacyPolicyPage = () => {
 
                     <div className="space-y-2">
                         <h2 className="text-lg font-semibold tracking-tight">5. Third-Party Services</h2>
-                        <p>Squadify may use third-party services that have their own privacy policies, including:</p>
+                        <p>Squadfish may use third-party services that have their own privacy policies, including:</p>
                         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
                             <li>Google Sign-In</li>
                             <li>Firebase</li>
@@ -96,7 +96,7 @@ export const PrivacyPolicyPage = () => {
 
                     <div className="space-y-2">
                         <h2 className="text-lg font-semibold tracking-tight">8. Children's Privacy</h2>
-                        <p>Squadify is not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
+                        <p>Squadfish is not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
                     </div>
 
                     <div className="space-y-2">

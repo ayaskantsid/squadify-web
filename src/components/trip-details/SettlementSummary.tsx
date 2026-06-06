@@ -18,12 +18,12 @@ const formatCurrency = (amount: number) => {
 };
 
 export const SettlementSummary = ({ settlement, isLoading }: SettlementSummaryProps) => {
-    const { squadifyUser } = useAuth();
+    const { squadfishUser } = useAuth();
 
     if (isLoading || !settlement) return null;
 
     const userBalance = settlement.balances?.find(
-        (b) => b.userId === squadifyUser?._id
+        (b) => b.userId === squadfishUser?._id
     );
     const balance = userBalance?.balance ?? 0;
     const isPositive = balance > 0;
