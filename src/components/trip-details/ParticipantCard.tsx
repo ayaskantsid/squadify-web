@@ -98,12 +98,6 @@ export const ParticipantCard = ({
                 >
                     {participant.role}
                 </Badge>
-                <Badge
-                    variant={statusBadgeVariant(participant.status)}
-                    className="text-[10px] px-1.5 py-0 capitalize"
-                >
-                    {participant.status}
-                </Badge>
             </div>
 
             {canRemove && (
