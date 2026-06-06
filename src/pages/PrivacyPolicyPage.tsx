@@ -107,7 +107,7 @@ export const PrivacyPolicyPage = () => {
                     <div className="space-y-2">
                         <h2 className="text-lg font-semibold tracking-tight">10. Contact Us</h2>
                         <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-                        <p className="text-primary font-medium">support@squadify.app</p>
+                        <p className="text-primary font-medium">ishugzb1998@gmail.com</p>
                     </div>
 
                 </CardContent>

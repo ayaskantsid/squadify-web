@@ -8,6 +8,7 @@ import {
 import App from "./App";
 
 import { AuthProvider } from "./auth/AuthContext";
+import { ThemeProvider } from "./hooks/useTheme";
 
 import "./index.css";
 
@@ -26,9 +27,11 @@ ReactDOM.createRoot(
 ).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <App />
-            </AuthProvider>
+            <ThemeProvider>
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
+            </ThemeProvider>
         </QueryClientProvider>
     </React.StrictMode>
 );
