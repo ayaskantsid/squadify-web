@@ -113,7 +113,26 @@ export const LoginPage = () => {
             <div className="login-orb" />
 
             {/* Glass card */}
-            <div className="login-card">
+            <div className="login-card overflow-hidden">
+                {/* Decorative fishes */}
+                <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 animate-orb-slow pointer-events-none">
+                    <div className="relative">
+                        {/* Tail */}
+                        <div className="absolute -left-5 -top-1 w-8 h-12 bg-white/5 rounded-[50%]" />
+                        <div className="absolute -left-5 -bottom-1 w-8 h-12 bg-white/5 rounded-[50%]" />
+                        {/* Body */}
+                        <div className="w-24 h-16 bg-white/5 rounded-[50%]" />
+                    </div>
+                </div>
+                <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 animate-orb-slow-reverse pointer-events-none">
+                    <div className="relative">
+                        {/* Tail */}
+                        <div className="absolute -right-3 top-0 w-6 h-10 bg-white/5 rounded-[50%]" />
+                        <div className="absolute -right-3 bottom-0 w-6 h-10 bg-white/5 rounded-[50%]" />
+                        {/* Body */}
+                        <div className="w-20 h-14 bg-white/5 rounded-[50%]" />
+                    </div>
+                </div>
 
                 {/* Logo */}
                 <div className="login-logo">
