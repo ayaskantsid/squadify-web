@@ -210,7 +210,7 @@ export const TripFormPage = () => {
                             <Input
                                 id="startDate"
                                 type="date"
-                                className="h-11 w-full block"
+                                className="h-11 w-full appearance-none m-0 max-w-[100%]"
                                 {...register("startDate")}
                             />
                             {errors.startDate && (
@@ -227,7 +227,7 @@ export const TripFormPage = () => {
                             <Input
                                 id="endDate"
                                 type="date"
-                                className="h-11 w-full block"
+                                className="h-11 w-full appearance-none m-0 max-w-[100%]"
                                 {...register("endDate")}
                             />
                             {errors.endDate && (

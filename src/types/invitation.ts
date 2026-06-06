@@ -2,6 +2,7 @@ export type PendingInvitation = {
     invitationId: string;
     tripId: string;
     tripName: string;
+    tripDescription?: string;
     invitedBy: {
         _id: string;
         displayName: string;

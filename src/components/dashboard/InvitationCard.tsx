@@ -2,6 +2,7 @@ import {
     Card,
     CardHeader,
     CardTitle,
+    CardDescription,
     CardContent,
     CardFooter,
 } from "@/components/ui/card";
@@ -32,6 +33,11 @@ export const InvitationCard = ({
                 <CardTitle className="text-base font-semibold">
                     {invitation.tripName}
                 </CardTitle>
+                {invitation.tripDescription && (
+                    <CardDescription className="line-clamp-2 mt-1">
+                        {invitation.tripDescription}
+                    </CardDescription>
+                )}
             </CardHeader>
 
             <CardContent className="pb-3">
@@ -46,7 +52,7 @@ export const InvitationCard = ({
                 </div>
             </CardContent>
 
-            <CardFooter className="gap-2 pt-0">
+            <CardFooter className="gap-2 py-3">
                 <Button
                     size="sm"
                     onClick={() =>
