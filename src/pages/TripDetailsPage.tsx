@@ -177,7 +177,6 @@ export const TripDetailsPage = () => {
                 trip={trip}
                 isAdmin={isAdmin}
                 onAddExpense={handleAddExpense}
-                onInviteMember={() => setInviteModalOpen(true)}
                 onDeleteTrip={() => setDeleteDialogOpen(true)}
             />
 

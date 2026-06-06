@@ -132,3 +132,34 @@ body {
     @apply font-sans;
     }
 }
+
+@layer utilities {
+    .animate-orb-slow {
+        animation: orb-float 12s ease-in-out infinite;
+    }
+    .animate-orb-slow-reverse {
+        animation: orb-float-reverse 15s ease-in-out infinite;
+    }
+    @keyframes orb-float {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(-35px, 20px) scale(1.02);
+        }
+        66% {
+            transform: translate(10px, -10px) scale(0.98);
+        }
+    }
+    @keyframes orb-float-reverse {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(35px, -20px) scale(1.02);
+        }
+        66% {
+            transform: translate(-10px, 10px) scale(0.98);
+        }
+    }
+}
