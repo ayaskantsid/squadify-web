@@ -115,8 +115,25 @@ export const TripFormPage = () => {
 
             {/* Header card */}
             <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-primary/5 via-background to-primary/[0.02] p-5 sm:p-6">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-20 h-20 bg-primary/3 rounded-full translate-y-1/2 -translate-x-1/2" />
+                {/* Decorative elements - Abstract fishes */}
+                <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 animate-orb-slow">
+                    <div className="relative">
+                        {/* Tail */}
+                        <div className="absolute -left-5 -top-1 w-8 h-12 bg-primary/5 rounded-[50%]" />
+                        <div className="absolute -left-5 -bottom-1 w-8 h-12 bg-primary/5 rounded-[50%]" />
+                        {/* Body */}
+                        <div className="w-24 h-16 bg-primary/5 rounded-[50%]" />
+                    </div>
+                </div>
+                <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 animate-orb-slow-reverse">
+                    <div className="relative">
+                        {/* Tail */}
+                        <div className="absolute -right-3 top-0 w-6 h-10 bg-primary/3 rounded-[50%]" />
+                        <div className="absolute -right-3 bottom-0 w-6 h-10 bg-primary/3 rounded-[50%]" />
+                        {/* Body */}
+                        <div className="w-20 h-14 bg-primary/3 rounded-[50%]" />
+                    </div>
+                </div>
 
                 <div className="relative">
                     <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
@@ -186,14 +203,14 @@ export const TripFormPage = () => {
                         <span className="text-muted-foreground font-normal text-xs">(end date optional)</span>
                     </Label>
                     <div className="grid gap-3 sm:grid-cols-2">
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 min-w-0">
                             <label htmlFor="startDate" className="text-xs text-muted-foreground">
                                 Start Date
                             </label>
                             <Input
                                 id="startDate"
                                 type="date"
-                                className="h-11"
+                                className="h-11 w-full block"
                                 {...register("startDate")}
                             />
                             {errors.startDate && (
@@ -203,14 +220,14 @@ export const TripFormPage = () => {
                             )}
                         </div>
 
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 min-w-0">
                             <label htmlFor="endDate" className="text-xs text-muted-foreground">
                                 End Date
                             </label>
                             <Input
                                 id="endDate"
                                 type="date"
-                                className="h-11"
+                                className="h-11 w-full block"
                                 {...register("endDate")}
                             />
                             {errors.endDate && (
