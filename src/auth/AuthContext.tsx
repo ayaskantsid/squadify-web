@@ -45,6 +45,7 @@ export const AuthProvider = ({
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+            setIsLoading(true);
             setFirebaseUser(fbUser);
             
             if (fbUser) {
@@ -56,6 +57,9 @@ export const AuthProvider = ({
                 } catch (error) {
                     console.error("Failed to initialize user with backend:", error);
                     toast.error("Failed to load user profile. Please try refreshing.");
+                    // Sign out from Firebase so the user isn't stuck
+                    await signOut(auth);
+                    setSquadfishUser(null);
                 }
             } else {
                 setSquadfishUser(null);

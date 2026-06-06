@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { loginDevUser }
@@ -66,6 +66,17 @@ export const LoginPage = () => {
         return null;
     }
 
+    // Reset local loading if auth process finished but user is not authenticated
+    const prevAuthLoading = useRef(authLoading);
+    useEffect(() => {
+        if (prevAuthLoading.current === true && authLoading === false) {
+            if (!isAuthenticated && loading) {
+                setLoading(false);
+            }
+        }
+        prevAuthLoading.current = authLoading;
+    }, [authLoading, isAuthenticated, loading]);
+
     const handleGoogleLogin =
         async () => {
             setLoading(true);
@@ -73,7 +84,6 @@ export const LoginPage = () => {
 
             try {
                 await loginWithGoogle();
-                navigate("/");
             } catch (err) {
                 const message =
                     err instanceof Error
@@ -81,7 +91,6 @@ export const LoginPage = () => {
                         : "Something went wrong. Please try again.";
 
                 setError(message);
-            } finally {
                 setLoading(false);
             }
         };
@@ -93,7 +102,6 @@ export const LoginPage = () => {
 
             try {
                 await loginDevUser();
-                navigate("/");
             } catch (err) {
                 const message =
                     err instanceof Error
@@ -101,7 +109,6 @@ export const LoginPage = () => {
                         : "Dev login failed.";
 
                 setError(message);
-            } finally {
                 setLoading(false);
             }
         };
