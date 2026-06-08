@@ -121,7 +121,7 @@ export const TripHeader = ({
                                     {trip.noOfExpenses ?? 0}
                                 </p>
                             </div>
-                            <p className="text-xs text-muted-foreground">Expenses</p>
+                            <p className="text-xs text-muted-foreground">{trip.noOfExpenses === 1 ? "Expense" : "Expenses"}</p>
                         </div>
                     </div>
 

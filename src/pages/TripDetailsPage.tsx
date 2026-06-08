@@ -13,7 +13,8 @@ import {
 import { useAuth } from "@/auth/AuthContext";
 import { useTrip, useDeleteTrip } from "@/hooks/useTrips";
 import { useParticipants, useInviteParticipant, useRemoveParticipant } from "@/hooks/useParticipants";
-import { useExpenses, useDeleteExpense } from "@/hooks/useExpenses";
+import { useExpenses, useDeleteExpense, useUpdateExpense } from "@/hooks/useExpenses";
+import type { Expense } from "@/types/expense";
 import { useSettlement } from "@/hooks/useBalances";
 import { TripHeader } from "@/components/trip-details/TripHeader";
 import { SettlementSummary } from "@/components/trip-details/SettlementSummary";
@@ -21,6 +22,7 @@ import { ParticipantCard } from "@/components/trip-details/ParticipantCard";
 import { ExpenseCard } from "@/components/trip-details/ExpenseCard";
 import { InviteMemberModal } from "@/components/trip-details/InviteMemberModal";
 import { TripDetailsSkeleton } from "@/components/trip-details/TripDetailsSkeleton";
+import { AddExpenseModal } from "@/components/trip-details/AddExpenseModal";
 import type { AxiosError } from "axios";
 
 export const TripDetailsPage = () => {
@@ -30,6 +32,8 @@ export const TripDetailsPage = () => {
 
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [addExpenseModalOpen, setAddExpenseModalOpen] = useState(false);
+    const [expenseToEdit, setExpenseToEdit] = useState<Expense | undefined>(undefined);
 
     // --- Data fetching (parallel) ---
     const {
@@ -166,8 +170,13 @@ export const TripDetailsPage = () => {
     };
 
     const handleAddExpense = () => {
-        // Future: open add expense modal or navigate to expense form
-        // For now, this is an extension point
+        setExpenseToEdit(undefined);
+        setAddExpenseModalOpen(true);
+    };
+
+    const handleEditExpense = (expense: Expense) => {
+        setExpenseToEdit(expense);
+        setAddExpenseModalOpen(true);
     };
 
     return (
@@ -302,6 +311,7 @@ export const TripDetailsPage = () => {
                                 currentUserId={squadfishUser?._id}
                                 isAdmin={isAdmin}
                                 onDelete={handleDeleteExpense}
+                                onEdit={handleEditExpense}
                                 isDeleting={deleteExpenseMutation.isPending}
                             />
                         ))}
@@ -336,6 +346,19 @@ export const TripDetailsPage = () => {
                 onOpenChange={setInviteModalOpen}
                 onInvite={handleInvite}
                 isPending={inviteMutation.isPending}
+            />
+
+            {/* Add/Edit Expense Modal */}
+            <AddExpenseModal
+                open={addExpenseModalOpen}
+                onOpenChange={(open) => {
+                    setAddExpenseModalOpen(open);
+                    if (!open) setExpenseToEdit(undefined);
+                }}
+                tripId={tripId!}
+                participants={participants ?? []}
+                currentUserId={squadfishUser?._id}
+                expenseToEdit={expenseToEdit}
             />
 
             {/* Delete Trip Confirmation Dialog */}

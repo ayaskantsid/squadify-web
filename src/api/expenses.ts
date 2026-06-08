@@ -8,9 +8,10 @@ export const getExpenses = async (tripId: string): Promise<Expense[]> => {
 
 export const createExpense = async (data: {
     tripId: string;
-    description: string;
+    description?: string;
     amount: number;
-    currency: string;
+    expenseDate: string;
+    splits?: { participantId: string; share: number }[];
     paidBy: string;
 }): Promise<Expense> => {
     const response = await api.post<Expense>("/api/expenses", data);
@@ -22,7 +23,7 @@ export const updateExpense = async ({
     data,
 }: {
     expenseId: string;
-    data: { description?: string; amount?: number; currency?: string };
+    data: { description?: string; amount?: number; expenseDate?: string; splits?: { participantId: string; share: number }[], paidBy?: string };
 }): Promise<Expense> => {
     const response = await api.put<Expense>(`/api/expenses/${expenseId}`, data);
     return response.data;

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getExpenses, createExpense, deleteExpense } from "@/api/expenses";
+import { getExpenses, createExpense, deleteExpense, updateExpense } from "@/api/expenses";
 import { toast } from "sonner";
 
 export const useExpenses = (tripId: string) => {
@@ -23,6 +23,23 @@ export const useCreateExpense = (tripId: string) => {
         },
         onError: () => {
             toast.error("Failed to add expense. Please try again.");
+        },
+    });
+};
+
+export const useUpdateExpense = (tripId: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: updateExpense,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["expenses", tripId] });
+            queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
+            queryClient.invalidateQueries({ queryKey: ["balances", tripId] });
+            toast.success("Expense updated successfully!");
+        },
+        onError: () => {
+            toast.error("Failed to update expense. Please try again.");
         },
     });
 };

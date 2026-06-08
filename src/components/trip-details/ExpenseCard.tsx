@@ -1,5 +1,11 @@
-import { Trash2, Calendar } from "lucide-react";
+import { Trash2, Calendar, MoreVertical, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { Expense } from "@/types/expense";
 import type { Participant } from "@/types/participant";
 
@@ -9,6 +15,7 @@ type ExpenseCardProps = {
     currentUserId: string | undefined;
     isAdmin: boolean;
     onDelete: (expenseId: string) => void;
+    onEdit?: (expense: Expense) => void;
     isDeleting: boolean;
 };
 
@@ -38,17 +45,19 @@ const getPaidByName = (
     participants: Participant[],
     currentUserId: string | undefined
 ): string => {
+    if (!paidBy) return "Unknown";
+
     // If paidBy is a populated object
     if (typeof paidBy === "object" && paidBy !== null) {
         return paidBy._id === currentUserId ? "You" : paidBy.displayName;
     }
 
-    // If paidBy is a string (user ID), find from participants
-    const participant = participants.find((p) => p.userId?._id === paidBy);
+    // If paidBy is a string (participant ID), find from participants
+    const participant = participants.find((p) => p._id === paidBy);
     if (participant?.userId) {
         return participant.userId._id === currentUserId
             ? "You"
-            : participant.userId.displayName;
+            : participant.userId.displayName || participant.userId.email;
     }
 
     return "Unknown";
@@ -60,18 +69,19 @@ export const ExpenseCard = ({
     currentUserId,
     isAdmin,
     onDelete,
+    onEdit,
     isDeleting,
 }: ExpenseCardProps) => {
     const paidByName = getPaidByName(expense.paidBy, participants, currentUserId);
-    const paidById = typeof expense.paidBy === "object" ? expense.paidBy._id : expense.paidBy;
-    const canDelete = isAdmin || paidById === currentUserId;
+    const paidById = expense.paidBy ? (typeof expense.paidBy === "object" ? (expense.paidBy as any)._id : expense.paidBy) : null;
+    const canDelete = isAdmin || (paidById && paidById === currentUserId);
 
     return (
         <div className="group flex items-start gap-3 rounded-lg border bg-card p-3.5 transition-colors hover:bg-muted/30">
             {/* Amount badge */}
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <span className="text-xs font-bold">
-                    {expense.currency === "INR" ? "₹" : expense.currency.charAt(0)}
+                    ₹
                 </span>
             </div>
 
@@ -81,7 +91,7 @@ export const ExpenseCard = ({
                         {expense.description}
                     </p>
                     <p className="text-sm font-bold text-foreground shrink-0">
-                        {formatCurrency(expense.amount, expense.currency)}
+                        {formatCurrency(expense.amount, "INR")}
                     </p>
                 </div>
 
@@ -94,21 +104,39 @@ export const ExpenseCard = ({
                     </p>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(expense.createdAt)}
+                        {formatDate(expense.expenseDate || expense.createdAt)}
                     </div>
                 </div>
             </div>
 
             {canDelete && (
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-destructive shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => onDelete(expense._id)}
-                    disabled={isDeleting}
-                >
-                    <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground shrink-0 -mr-1"
+                            disabled={isDeleting}
+                        >
+                            <MoreVertical className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[160px]">
+                        {onEdit && (
+                            <DropdownMenuItem onClick={() => onEdit(expense)} className="cursor-pointer">
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                            </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem
+                            className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                            onClick={() => onDelete(expense._id)}
+                        >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             )}
         </div>
     );
