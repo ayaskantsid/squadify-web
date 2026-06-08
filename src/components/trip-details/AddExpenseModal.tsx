@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Receipt, AlignLeft, DollarSign, User, Calendar, Split, CheckSquare, Square } from "lucide-react";
+import { Receipt, AlignLeft, DollarSign, User, Calendar, Split, CheckSquare } from "lucide-react";
 import type { Participant } from "@/types/participant";
 import { useCreateExpense, useUpdateExpense } from "@/hooks/useExpenses";
 import type { Expense } from "@/types/expense";
@@ -83,13 +83,11 @@ export const AddExpenseModal = ({
         handleSubmit,
         formState: { errors },
         reset,
-        setValue,
-        getValues,
     } = useForm<ExpenseFormValues>({
-        resolver: zodResolver(expenseSchema),
+        resolver: zodResolver(expenseSchema) as any,
         defaultValues: {
             description: "",
-            amount: undefined,
+            amount: undefined as unknown as number,
             expenseDate: toDateInputValue(new Date()),
             paidBy: "",
             isCustomSplit: false,
@@ -169,8 +167,7 @@ export const AddExpenseModal = ({
     }, [open, currentUserId, reset, participants, expenseToEdit]); // Include participants in deps if they update
 
     const onSubmit = (data: ExpenseFormValues) => {
-        // Prepare splits payload
-        let finalSplits: { participantId: string; amount: number }[] | undefined = undefined;
+        let finalSplits: { participantId: string; share: number }[] | undefined = undefined;
         
         if (data.isCustomSplit && data.splits) {
             finalSplits = data.splits
@@ -250,7 +247,7 @@ export const AddExpenseModal = ({
                 </DialogHeader>
 
                 <div className="overflow-y-auto flex-1 pr-1 -mr-1">
-                    <form id="add-expense-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4 relative z-10 py-1">
+                    <form id="add-expense-form" onSubmit={handleSubmit(onSubmit as any)} className="space-y-4 relative z-10 py-1">
                         
                         {/* Description */}
                         <div className="space-y-2">

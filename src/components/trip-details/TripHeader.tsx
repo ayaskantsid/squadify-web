@@ -5,6 +5,7 @@ import {
     Pencil,
     Trash2,
     ArrowLeft,
+    HandCoins,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -127,7 +128,11 @@ export const TripHeader = ({
 
                     {/* Action buttons */}
                     <div className="flex flex-wrap items-center gap-2 pt-1">
-                        <Button size="sm" onClick={onAddExpense}>
+                        <Button size="sm" onClick={() => navigate(`/trips/${trip._id}/settlement`)}>
+                            <HandCoins className="h-4 w-4 mr-1.5" />
+                            Settle Up
+                        </Button>
+                        <Button size="sm" onClick={onAddExpense} className="hidden sm:inline-flex">
                             <Plus className="h-4 w-4 mr-1.5" />
                             Add Expense
                         </Button>

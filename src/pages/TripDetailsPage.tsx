@@ -13,7 +13,7 @@ import {
 import { useAuth } from "@/auth/AuthContext";
 import { useTrip, useDeleteTrip } from "@/hooks/useTrips";
 import { useParticipants, useInviteParticipant, useRemoveParticipant } from "@/hooks/useParticipants";
-import { useExpenses, useDeleteExpense, useUpdateExpense } from "@/hooks/useExpenses";
+import { useExpenses, useDeleteExpense } from "@/hooks/useExpenses";
 import type { Expense } from "@/types/expense";
 import { useSettlement } from "@/hooks/useBalances";
 import { TripHeader } from "@/components/trip-details/TripHeader";
