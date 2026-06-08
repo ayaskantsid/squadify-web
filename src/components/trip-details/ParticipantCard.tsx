@@ -25,19 +25,6 @@ const roleBadgeVariant = (role: string) => {
     return role === "admin" ? "default" : "secondary";
 };
 
-const statusBadgeVariant = (status: string) => {
-    switch (status) {
-        case "accepted":
-            return "outline" as const;
-        case "invited":
-            return "secondary" as const;
-        case "declined":
-            return "destructive" as const;
-        default:
-            return "secondary" as const;
-    }
-};
-
 const avatarColors = [
     "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300",
     "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",

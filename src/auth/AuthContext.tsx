@@ -28,8 +28,8 @@ const AuthContext = createContext<AuthContextType>({
     squadfishUser: null,
     isAuthenticated: false,
     isLoading: true,
-    loginWithGoogle: async () => {},
-    logout: async () => {},
+    loginWithGoogle: async () => { },
+    logout: async () => { },
 });
 
 export const AuthProvider = ({
@@ -47,7 +47,7 @@ export const AuthProvider = ({
         const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
             setIsLoading(true);
             setFirebaseUser(fbUser);
-            
+
             if (fbUser) {
                 try {
                     // Make sure we have the token available for apiClient
