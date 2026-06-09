@@ -5,6 +5,7 @@ import { loginDevUser }
     from "../auth/devAuth";
 
 import { useAuth } from "../auth/AuthContext";
+import api from "../api/apiClient";
 
 import "./LoginPage.css";
 
@@ -59,6 +60,13 @@ export const LoginPage = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Ping backend to wake it up (e.g., Render free tier sleep)
+    useEffect(() => {
+        api.get("/").catch(() => {
+            // Silently ignore errors; we only care about waking it up
+        });
+    }, []);
 
     // If user is already logged in, redirect
     if (!authLoading && isAuthenticated) {
