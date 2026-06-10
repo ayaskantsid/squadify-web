@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AlertCircle, RefreshCw, ShieldX, SearchX, Receipt, UserPlus, Users, Plus, Trash2 } from "lucide-react";
+import { AlertCircle, RefreshCw, ShieldX, SearchX, Receipt, UserPlus, Users, Plus, Trash2, PenLine, Scan } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -10,6 +10,12 @@ import {
     DialogDescription,
     DialogFooter,
 } from "@/components/ui/dialog";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/auth/AuthContext";
 import { useTrip, useDeleteTrip } from "@/hooks/useTrips";
 import { useParticipants, useInviteParticipant, useRemoveParticipant } from "@/hooks/useParticipants";
@@ -321,14 +327,27 @@ export const TripDetailsPage = () => {
             </section>
 
             {/* Sticky mobile Add Expense button */}
-            <div className="fixed bottom-16 right-4 sm:hidden z-40">
-                <Button
-                    size="lg"
-                    className="rounded-full h-14 w-14 shadow-lg shadow-primary/25"
-                    onClick={handleAddExpense}
-                >
-                    <Plus className="h-6 w-6" />
-                </Button>
+            <div className="fixed bottom-18 right-4 sm:hidden z-40">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            size="lg"
+                            className="rounded-full h-14 w-14 shadow-lg shadow-primary/25"
+                        >
+                            <Plus className="h-6 w-6" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" sideOffset={10}>
+                        <DropdownMenuItem onClick={handleAddExpense}>
+                            <PenLine className="mr-2 h-4 w-4" />
+                            <span>Add Expense</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { }}>
+                            <Scan className="mr-2 h-4 w-4" />
+                            <span>Scan receipt</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
 
             {/* Invite Member Modal */}

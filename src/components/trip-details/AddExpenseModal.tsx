@@ -71,7 +71,7 @@ export const AddExpenseModal = ({
 }: AddExpenseModalProps) => {
     const { mutate: createExpense, isPending: isCreating } = useCreateExpense(tripId);
     const { mutate: updateExpense, isPending: isUpdating } = useUpdateExpense(tripId);
-    
+
     const isPending = isCreating || isUpdating;
     const isEditMode = !!expenseToEdit;
 
@@ -146,7 +146,7 @@ export const AddExpenseModal = ({
             }
 
             const currentUserParticipant = acceptedParticipants.find(p => p.userId?._id === currentUserId);
-            
+
             // Resolve paidBy: expenseToEdit.paidBy can be an object or string
             let paidById = currentUserParticipant?._id || "";
             if (expenseToEdit?.paidBy) {
@@ -156,8 +156,8 @@ export const AddExpenseModal = ({
             reset({
                 description: expenseToEdit?.description || "",
                 amount: expenseToEdit?.amount || undefined,
-                expenseDate: expenseToEdit?.expenseDate 
-                    ? toDateInputValue(new Date(expenseToEdit.expenseDate)) 
+                expenseDate: expenseToEdit?.expenseDate
+                    ? toDateInputValue(new Date(expenseToEdit.expenseDate))
                     : toDateInputValue(new Date()),
                 paidBy: paidById,
                 isCustomSplit: isCustomSplit,
@@ -168,7 +168,7 @@ export const AddExpenseModal = ({
 
     const onSubmit = (data: ExpenseFormValues) => {
         let finalSplits: { participantId: string; share: number }[] | undefined = undefined;
-        
+
         if (data.isCustomSplit && data.splits) {
             finalSplits = data.splits
                 .filter(s => s.selected)
@@ -248,7 +248,7 @@ export const AddExpenseModal = ({
 
                 <div className="overflow-y-auto flex-1 pr-1 -mr-1">
                     <form id="add-expense-form" onSubmit={handleSubmit(onSubmit as any)} className="space-y-4 relative z-10 py-1">
-                        
+
                         {/* Expense Name */}
                         <div className="space-y-2">
                             <Label htmlFor="description" className="flex items-center gap-2 text-sm font-medium">
@@ -356,8 +356,8 @@ export const AddExpenseModal = ({
                                     <p className="text-xs text-muted-foreground">Split unequally among specific members</p>
                                 </div>
                                 <div className="shrink-0 flex items-center">
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         className="h-5 w-5 rounded border-primary/50 text-primary focus:ring-primary accent-primary"
                                         {...register("isCustomSplit")}
                                     />
@@ -381,11 +381,11 @@ export const AddExpenseModal = ({
                                     {fields.map((field, index) => {
                                         const isSelected = splitsWatch?.[index]?.selected;
                                         const name = splitsWatch?.[index]?.name || "User";
-                                        
+
                                         return (
                                             <div key={field.id} className="flex items-center gap-3">
                                                 <label className="flex flex-1 items-center gap-2.5 cursor-pointer">
-                                                    <input 
+                                                    <input
                                                         type="checkbox"
                                                         className="h-4 w-4 rounded border-primary/50 text-primary focus:ring-primary accent-primary"
                                                         {...register(`splits.${index}.selected` as const)}
@@ -394,7 +394,7 @@ export const AddExpenseModal = ({
                                                         {name}
                                                     </span>
                                                 </label>
-                                                
+
                                                 <div className="w-24 shrink-0">
                                                     {isSelected ? (
                                                         <Input
@@ -442,7 +442,7 @@ export const AddExpenseModal = ({
                     </form>
                 </div>
 
-                <DialogFooter className="gap-2 sm:gap-0 pt-4 mt-2 border-t shrink-0">
+                <DialogFooter className="gap-2 sm:gap-4 pt-4 mt-2 border-t shrink-0">
                     <Button
                         type="button"
                         variant="outline"

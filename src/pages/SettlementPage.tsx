@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
     ArrowLeft,
-    ArrowRight,
     TrendingUp,
     TrendingDown,
     Users,
@@ -504,12 +503,12 @@ export const SettlementPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* Arrow + Amount */}
-                                        <div className="flex flex-col items-center shrink-0 gap-0.5">
-                                            <span className="text-sm font-bold text-foreground">
+                                        {/* Line + Amount */}
+                                        <div className="flex flex-col items-center flex-1 min-w-[60px] sm:min-w-[100px] gap-1.5 px-2">
+                                            <span className="text-sm font-bold text-foreground whitespace-nowrap">
                                                 {formatCurrency(s.amount)}
                                             </span>
-                                            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                                            <div className="w-full h-px bg-muted-foreground/30 rounded-full" />
                                         </div>
 
                                         {/* To */}

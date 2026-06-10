@@ -6,10 +6,18 @@ import {
     Trash2,
     ArrowLeft,
     HandCoins,
+    PenLine,
+    Scan
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { Trip } from "@/types/trip";
 
 type TripHeaderProps = {
@@ -132,10 +140,24 @@ export const TripHeader = ({
                             <HandCoins className="h-4 w-4 mr-1.5" />
                             Settle Up
                         </Button>
-                        <Button size="sm" onClick={onAddExpense} className="hidden sm:inline-flex">
-                            <Plus className="h-4 w-4 mr-1.5" />
-                            Add Expense
-                        </Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button size="sm" className="hidden sm:inline-flex">
+                                    <Plus className="h-4 w-4 mr-1.5" />
+                                    Add Expense
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={onAddExpense}>
+                                    <PenLine className="mr-2 h-4 w-4" />
+                                    <span>Add Expense</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {}}>
+                                    <Scan className="mr-2 h-4 w-4" />
+                                    <span>Scan receipt</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         {isAdmin && (
                             <Button
                                 size="sm"
