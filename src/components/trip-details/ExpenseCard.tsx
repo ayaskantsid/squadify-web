@@ -1,4 +1,4 @@
-import { Trash2, Calendar, MoreVertical, Pencil } from "lucide-react";
+import { Trash2, Calendar, MoreVertical, Pencil, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -47,17 +47,17 @@ const getPaidByName = (
 ): string => {
     if (!paidBy) return "Unknown";
 
-    // If paidBy is a populated object
-    if (typeof paidBy === "object" && paidBy !== null) {
-        return paidBy._id === currentUserId ? "You" : paidBy.displayName;
-    }
-
-    // If paidBy is a string (participant ID), find from participants
-    const participant = participants.find((p) => p._id === paidBy);
+    const paidById = typeof paidBy === "object" && paidBy !== null ? (paidBy as any)._id : paidBy;
+    const participant = participants.find((p) => p._id === paidById);
+    
     if (participant?.userId) {
         return participant.userId._id === currentUserId
             ? "You"
-            : participant.userId.displayName || participant.userId.email;
+            : participant.userId.displayName || participant.userId.email || "Unknown";
+    }
+
+    if (typeof paidBy === "object" && paidBy !== null) {
+         return (paidBy as any).displayName || "Unknown";
     }
 
     return "Unknown";
@@ -73,8 +73,12 @@ export const ExpenseCard = ({
     isDeleting,
 }: ExpenseCardProps) => {
     const paidByName = getPaidByName(expense.paidBy, participants, currentUserId);
+    const paidByFirstName = paidByName.split(' ')[0];
     const paidById = expense.paidBy ? (typeof expense.paidBy === "object" ? (expense.paidBy as any)._id : expense.paidBy) : null;
-    const canDelete = isAdmin || (paidById && paidById === currentUserId);
+    const paidByParticipant = participants.find((p) => p._id === paidById);
+    const paidByUserId = paidByParticipant?.userId?._id;
+    
+    const canEdit = isAdmin || (paidByUserId && paidByUserId === currentUserId);
 
     return (
         <div className="group flex items-start gap-3 rounded-lg border bg-card p-3.5 transition-colors hover:bg-muted/30">
@@ -88,7 +92,7 @@ export const ExpenseCard = ({
             <div className="flex-1 min-w-0 space-y-1">
                 <div className="flex items-start justify-between gap-2">
                     <p className="text-sm font-medium text-foreground truncate">
-                        {expense.description}
+                        {expense.description || "Untitled Expense"}
                     </p>
                     <p className="text-sm font-bold text-foreground shrink-0">
                         {formatCurrency(expense.amount, "INR")}
@@ -99,7 +103,7 @@ export const ExpenseCard = ({
                     <p className="text-xs text-muted-foreground">
                         Paid by{" "}
                         <span className="font-medium text-foreground/80">
-                            {paidByName}
+                            {paidByFirstName}
                         </span>
                     </p>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
@@ -109,35 +113,45 @@ export const ExpenseCard = ({
                 </div>
             </div>
 
-            {canDelete && (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-muted-foreground shrink-0 -mr-1"
-                            disabled={isDeleting}
-                        >
-                            <MoreVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[160px]">
-                        {onEdit && (
-                            <DropdownMenuItem onClick={() => onEdit(expense)} className="cursor-pointer">
-                                <Pencil className="mr-2 h-4 w-4" />
-                                Edit
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground shrink-0 -mr-1"
+                        disabled={isDeleting}
+                    >
+                        <MoreVertical className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[200px]">
+                    {canEdit ? (
+                        <>
+                            {onEdit && (
+                                <DropdownMenuItem onClick={() => onEdit(expense)} className="cursor-pointer">
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    Edit
+                                </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem
+                                className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                                onClick={() => onDelete(expense._id)}
+                            >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
                             </DropdownMenuItem>
-                        )}
+                        </>
+                    ) : (
                         <DropdownMenuItem
-                            className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
-                            onClick={() => onDelete(expense._id)}
+                            disabled
+                            className="text-muted-foreground opacity-60 cursor-default"
                         >
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
+                            <Lock className="mr-2 h-4 w-4" />
+                            Only payer or admin can edit
                         </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )}
+                    )}
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 };

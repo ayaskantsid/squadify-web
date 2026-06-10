@@ -15,9 +15,7 @@ import { useTrip, useDeleteTrip } from "@/hooks/useTrips";
 import { useParticipants, useInviteParticipant, useRemoveParticipant } from "@/hooks/useParticipants";
 import { useExpenses, useDeleteExpense } from "@/hooks/useExpenses";
 import type { Expense } from "@/types/expense";
-import { useSettlement } from "@/hooks/useBalances";
 import { TripHeader } from "@/components/trip-details/TripHeader";
-import { SettlementSummary } from "@/components/trip-details/SettlementSummary";
 import { ParticipantCard } from "@/components/trip-details/ParticipantCard";
 import { ExpenseCard } from "@/components/trip-details/ExpenseCard";
 import { InviteMemberModal } from "@/components/trip-details/InviteMemberModal";
@@ -54,10 +52,7 @@ export const TripDetailsPage = () => {
         isLoading: expensesLoading,
     } = useExpenses(tripId!);
 
-    const {
-        data: settlement,
-        isLoading: settlementLoading,
-    } = useSettlement(tripId!);
+
 
     // --- Mutations ---
     const inviteMutation = useInviteParticipant();
@@ -189,11 +184,7 @@ export const TripDetailsPage = () => {
                 onDeleteTrip={() => setDeleteDialogOpen(true)}
             />
 
-            {/* 2. Settlement Summary */}
-            <SettlementSummary
-                settlement={settlement}
-                isLoading={settlementLoading}
-            />
+
 
             {/* 3. Participants Section */}
             <section className="space-y-3">

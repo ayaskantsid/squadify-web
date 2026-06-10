@@ -249,13 +249,13 @@ export const AddExpenseModal = ({
                 <div className="overflow-y-auto flex-1 pr-1 -mr-1">
                     <form id="add-expense-form" onSubmit={handleSubmit(onSubmit as any)} className="space-y-4 relative z-10 py-1">
                         
-                        {/* Description */}
+                        {/* Expense Name */}
                         <div className="space-y-2">
                             <Label htmlFor="description" className="flex items-center gap-2 text-sm font-medium">
                                 <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10">
                                     <AlignLeft className="h-3.5 w-3.5 text-primary" />
                                 </div>
-                                Description
+                                Expense Name
                                 <span className="text-muted-foreground font-normal text-xs">(optional)</span>
                             </Label>
                             <Input

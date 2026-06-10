@@ -10,6 +10,7 @@ import { InvitationsPage } from "./pages/InvitationsPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { CreateTripPage } from "./pages/CreateTripPage";
 import { TripDetailsPage } from "./pages/TripDetailsPage";
+import { SettlementPage } from "./pages/SettlementPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AppLayout } from "./components/layout/AppLayout";
@@ -54,6 +55,10 @@ function App() {
                     <Route
                         path="/trips/:tripId"
                         element={<TripDetailsPage />}
+                    />
+                    <Route
+                        path="/trips/:tripId/settlement"
+                        element={<SettlementPage />}
                     />
                     <Route
                         path="/trips/:tripId/edit"

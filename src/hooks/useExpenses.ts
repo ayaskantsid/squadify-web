@@ -19,6 +19,7 @@ export const useCreateExpense = (tripId: string) => {
             queryClient.invalidateQueries({ queryKey: ["expenses", tripId] });
             queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
             queryClient.invalidateQueries({ queryKey: ["balances", tripId] });
+            queryClient.invalidateQueries({ queryKey: ["settlements", tripId] });
             toast.success("Expense added successfully!");
         },
         onError: () => {
@@ -36,6 +37,7 @@ export const useUpdateExpense = (tripId: string) => {
             queryClient.invalidateQueries({ queryKey: ["expenses", tripId] });
             queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
             queryClient.invalidateQueries({ queryKey: ["balances", tripId] });
+            queryClient.invalidateQueries({ queryKey: ["settlements", tripId] });
             toast.success("Expense updated successfully!");
         },
         onError: () => {
@@ -53,6 +55,7 @@ export const useDeleteExpense = (tripId: string) => {
             queryClient.invalidateQueries({ queryKey: ["expenses", tripId] });
             queryClient.invalidateQueries({ queryKey: ["trip", tripId] });
             queryClient.invalidateQueries({ queryKey: ["balances", tripId] });
+            queryClient.invalidateQueries({ queryKey: ["settlements", tripId] });
             toast.success("Expense deleted successfully.");
         },
         onError: () => {
