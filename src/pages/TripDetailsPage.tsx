@@ -82,6 +82,32 @@ export const TripDetailsPage = () => {
 
     const participantCount = participants?.length ?? 0;
 
+    // --- Callbacks (must be before early returns to satisfy Rules of Hooks) ---
+    const handleScanReceipt = useCallback(() => {
+        receiptInputRef.current?.click();
+    }, []);
+
+    const handleReceiptFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        // Reset input so the same file can be picked again later
+        e.target.value = "";
+
+        setIsScanning(true);
+        try {
+            const result = await scanReceipt(file);
+            setScannedData(result);
+            setExpenseToEdit(undefined);
+            setAddExpenseModalOpen(true);
+        } catch {
+            toast.error("Unable to read receipt.", {
+                description: "Try another photo or add the expense manually.",
+            });
+        } finally {
+            setIsScanning(false);
+        }
+    }, []);
+
     // --- Error handling ---
     const errorStatus = (tripErrorObj as AxiosError)?.response?.status;
 
@@ -187,31 +213,6 @@ export const TripDetailsPage = () => {
         setScannedData(undefined);
         setAddExpenseModalOpen(true);
     };
-
-    const handleScanReceipt = useCallback(() => {
-        receiptInputRef.current?.click();
-    }, []);
-
-    const handleReceiptFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        // Reset input so the same file can be picked again later
-        e.target.value = "";
-
-        setIsScanning(true);
-        try {
-            const result = await scanReceipt(file);
-            setScannedData(result);
-            setExpenseToEdit(undefined);
-            setAddExpenseModalOpen(true);
-        } catch {
-            toast.error("Unable to read receipt.", {
-                description: "Try another photo or add the expense manually.",
-            });
-        } finally {
-            setIsScanning(false);
-        }
-    }, []);
 
     return (
         <div className="space-y-6 pb-20 sm:pb-6">
