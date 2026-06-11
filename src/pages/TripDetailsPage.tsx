@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AlertCircle, RefreshCw, ShieldX, SearchX, Receipt, UserPlus, Users, Plus, Trash2, PenLine, Scan } from "lucide-react";
 import { toast } from "sonner";
+import imageCompression from "browser-image-compression";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -95,7 +96,15 @@ export const TripDetailsPage = () => {
 
         setIsScanning(true);
         try {
-            const result = await scanReceipt(file);
+            // Compress image to save bandwidth and avoid huge payloads
+            const options = {
+                maxSizeMB: 2,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true,
+            };
+            const compressedFile = await imageCompression(file, options);
+            
+            const result = await scanReceipt(compressedFile);
             setScannedData(result);
             setExpenseToEdit(undefined);
             setAddExpenseModalOpen(true);
