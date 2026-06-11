@@ -32,3 +32,24 @@ export const updateExpense = async ({
 export const deleteExpense = async (expenseId: string): Promise<void> => {
     await api.delete(`/api/expenses/${expenseId}`);
 };
+
+export type ScannedReceiptData = {
+    description: string;
+    amount: number;
+    date: string; // "YYYY-MM-DD"
+};
+
+export const scanReceipt = async (file: File): Promise<ScannedReceiptData> => {
+    const formData = new FormData();
+    formData.append("receipt", file);
+    const response = await api.post<{ success: boolean } & ScannedReceiptData>(
+        "/api/expenses/scan-receipt",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    return {
+        description: response.data.description,
+        amount: response.data.amount,
+        date: response.data.date,
+    };
+};

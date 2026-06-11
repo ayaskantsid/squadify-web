@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AlertCircle, RefreshCw, ShieldX, SearchX, Receipt, UserPlus, Users, Plus, Trash2, PenLine, Scan } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -27,6 +28,8 @@ import { ExpenseCard } from "@/components/trip-details/ExpenseCard";
 import { InviteMemberModal } from "@/components/trip-details/InviteMemberModal";
 import { TripDetailsSkeleton } from "@/components/trip-details/TripDetailsSkeleton";
 import { AddExpenseModal } from "@/components/trip-details/AddExpenseModal";
+import { scanReceipt } from "@/api/expenses";
+import type { ScannedReceiptData } from "@/api/expenses";
 import type { AxiosError } from "axios";
 
 export const TripDetailsPage = () => {
@@ -38,6 +41,9 @@ export const TripDetailsPage = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [addExpenseModalOpen, setAddExpenseModalOpen] = useState(false);
     const [expenseToEdit, setExpenseToEdit] = useState<Expense | undefined>(undefined);
+    const [scannedData, setScannedData] = useState<ScannedReceiptData | undefined>(undefined);
+    const [isScanning, setIsScanning] = useState(false);
+    const receiptInputRef = useRef<HTMLInputElement>(null);
 
     // --- Data fetching (parallel) ---
     const {
@@ -172,21 +178,78 @@ export const TripDetailsPage = () => {
 
     const handleAddExpense = () => {
         setExpenseToEdit(undefined);
+        setScannedData(undefined);
         setAddExpenseModalOpen(true);
     };
 
     const handleEditExpense = (expense: Expense) => {
         setExpenseToEdit(expense);
+        setScannedData(undefined);
         setAddExpenseModalOpen(true);
     };
 
+    const handleScanReceipt = useCallback(() => {
+        receiptInputRef.current?.click();
+    }, []);
+
+    const handleReceiptFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        // Reset input so the same file can be picked again later
+        e.target.value = "";
+
+        setIsScanning(true);
+        try {
+            const result = await scanReceipt(file);
+            setScannedData(result);
+            setExpenseToEdit(undefined);
+            setAddExpenseModalOpen(true);
+        } catch {
+            toast.error("Unable to read receipt.", {
+                description: "Try another photo or add the expense manually.",
+            });
+        } finally {
+            setIsScanning(false);
+        }
+    }, []);
+
     return (
         <div className="space-y-6 pb-20 sm:pb-6">
+            {/* Hidden receipt file input */}
+            <input
+                ref={receiptInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={handleReceiptFileChange}
+                aria-hidden="true"
+            />
+
+            {/* Scanning overlay */}
+            {isScanning && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+                    <div className="flex flex-col items-center gap-4 rounded-2xl border bg-card p-8 shadow-xl text-center">
+                        <div className="relative">
+                            <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                <Scan className="h-7 w-7 text-primary animate-pulse" />
+                            </div>
+                            <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping" />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="font-semibold text-foreground">Scanning receipt...</p>
+                            <p className="text-sm text-muted-foreground">This will just take a moment</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* 1. Trip Header */}
             <TripHeader
                 trip={trip}
                 isAdmin={isAdmin}
                 onAddExpense={handleAddExpense}
+                onScanReceipt={handleScanReceipt}
                 onDeleteTrip={() => setDeleteDialogOpen(true)}
             />
 
@@ -333,6 +396,7 @@ export const TripDetailsPage = () => {
                         <Button
                             size="lg"
                             className="rounded-full h-14 w-14 shadow-lg shadow-primary/25"
+                            disabled={isScanning}
                         >
                             <Plus className="h-6 w-6" />
                         </Button>
@@ -342,9 +406,9 @@ export const TripDetailsPage = () => {
                             <PenLine className="mr-2 h-4 w-4" />
                             <span>Add Expense</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => { }}>
+                        <DropdownMenuItem onClick={handleScanReceipt}>
                             <Scan className="mr-2 h-4 w-4" />
-                            <span>Scan receipt</span>
+                            <span>Scan Receipt</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -363,12 +427,16 @@ export const TripDetailsPage = () => {
                 open={addExpenseModalOpen}
                 onOpenChange={(open) => {
                     setAddExpenseModalOpen(open);
-                    if (!open) setExpenseToEdit(undefined);
+                    if (!open) {
+                        setExpenseToEdit(undefined);
+                        setScannedData(undefined);
+                    }
                 }}
                 tripId={tripId!}
                 participants={participants ?? []}
                 currentUserId={squadfishUser?._id}
                 expenseToEdit={expenseToEdit}
+                scannedData={scannedData}
             />
 
             {/* Delete Trip Confirmation Dialog */}

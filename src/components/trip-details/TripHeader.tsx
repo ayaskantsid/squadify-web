@@ -24,6 +24,7 @@ type TripHeaderProps = {
     trip: Trip;
     isAdmin: boolean;
     onAddExpense: () => void;
+    onScanReceipt: () => void;
     onDeleteTrip: () => void;
 };
 
@@ -48,6 +49,7 @@ export const TripHeader = ({
     trip,
     isAdmin,
     onAddExpense,
+    onScanReceipt,
     onDeleteTrip,
 }: TripHeaderProps) => {
     const navigate = useNavigate();
@@ -152,9 +154,9 @@ export const TripHeader = ({
                                     <PenLine className="mr-2 h-4 w-4" />
                                     <span>Add Expense</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {}}>
+                                <DropdownMenuItem onClick={onScanReceipt}>
                                     <Scan className="mr-2 h-4 w-4" />
-                                    <span>Scan receipt</span>
+                                    <span>Scan Receipt</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

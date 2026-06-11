@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import type { ScannedReceiptData } from "@/api/expenses";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -54,6 +55,7 @@ type AddExpenseModalProps = {
     participants: Participant[];
     currentUserId?: string;
     expenseToEdit?: Expense;
+    scannedData?: ScannedReceiptData;
 };
 
 // Helper to convert date to YYYY-MM-DD string
@@ -68,6 +70,7 @@ export const AddExpenseModal = ({
     participants,
     currentUserId,
     expenseToEdit,
+    scannedData,
 }: AddExpenseModalProps) => {
     const { mutate: createExpense, isPending: isCreating } = useCreateExpense(tripId);
     const { mutate: updateExpense, isPending: isUpdating } = useUpdateExpense(tripId);
@@ -154,17 +157,19 @@ export const AddExpenseModal = ({
             }
 
             reset({
-                description: expenseToEdit?.description || "",
-                amount: expenseToEdit?.amount || undefined,
+                description: expenseToEdit?.description ?? scannedData?.description ?? "",
+                amount: expenseToEdit?.amount ?? scannedData?.amount ?? (undefined as unknown as number),
                 expenseDate: expenseToEdit?.expenseDate
                     ? toDateInputValue(new Date(expenseToEdit.expenseDate))
-                    : toDateInputValue(new Date()),
+                    : scannedData?.date
+                        ? toDateInputValue(new Date(scannedData.date))
+                        : toDateInputValue(new Date()),
                 paidBy: paidById,
                 isCustomSplit: isCustomSplit,
                 splits: initialSplits,
             });
         }
-    }, [open, currentUserId, reset, participants, expenseToEdit]); // Include participants in deps if they update
+    }, [open, currentUserId, reset, participants, expenseToEdit, scannedData]);
 
     const onSubmit = (data: ExpenseFormValues) => {
         let finalSplits: { participantId: string; share: number }[] | undefined = undefined;
