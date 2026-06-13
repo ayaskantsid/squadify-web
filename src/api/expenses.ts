@@ -53,3 +53,24 @@ export const scanReceipt = async (file: File): Promise<ScannedReceiptData> => {
         date: response.data.date,
     };
 };
+
+export type ScanQuota = {
+    userLimit: number;
+    userUsed: number;
+    userRemaining: number;
+    canScan: boolean;
+    resetsAt: string;
+};
+
+export const getScanQuota = async (): Promise<ScanQuota> => {
+    const response = await api.get<{ success: boolean } & ScanQuota>(
+        "/api/expenses/scan-receipt/quota"
+    );
+    return {
+        userLimit: response.data.userLimit,
+        userUsed: response.data.userUsed,
+        userRemaining: response.data.userRemaining,
+        canScan: response.data.canScan,
+        resetsAt: response.data.resetsAt,
+    };
+};

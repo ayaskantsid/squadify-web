@@ -26,6 +26,7 @@ type TripHeaderProps = {
     onAddExpense: () => void;
     onScanReceipt: () => void;
     onDeleteTrip: () => void;
+    scansRemaining?: number;
 };
 
 const formatDate = (dateStr: string) => {
@@ -51,6 +52,7 @@ export const TripHeader = ({
     onAddExpense,
     onScanReceipt,
     onDeleteTrip,
+    scansRemaining,
 }: TripHeaderProps) => {
     const navigate = useNavigate();
 
@@ -149,14 +151,14 @@ export const TripHeader = ({
                                     Add Expense
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
+                            <DropdownMenuContent align="end" className="min-w-36">
                                 <DropdownMenuItem onClick={onAddExpense}>
                                     <PenLine className="mr-2 h-4 w-4" />
                                     <span>Add Expense</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={onScanReceipt}>
                                     <Scan className="mr-2 h-4 w-4" />
-                                    <span>Scan Receipt</span>
+                                    <span>Scan Receipt{scansRemaining !== undefined ? ` (${scansRemaining} left)` : ""}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

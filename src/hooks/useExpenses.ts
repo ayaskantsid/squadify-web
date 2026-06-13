@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getExpenses, createExpense, deleteExpense, updateExpense } from "@/api/expenses";
+import { getExpenses, createExpense, deleteExpense, updateExpense, getScanQuota } from "@/api/expenses";
 import { toast } from "sonner";
 
 export const useExpenses = (tripId: string) => {
@@ -61,5 +61,13 @@ export const useDeleteExpense = (tripId: string) => {
         onError: () => {
             toast.error("Failed to delete expense. Please try again.");
         },
+    });
+};
+
+export const useScanQuota = () => {
+    return useQuery({
+        queryKey: ["scanQuota"],
+        queryFn: getScanQuota,
+        staleTime: 30 * 1000, // 30 seconds
     });
 };

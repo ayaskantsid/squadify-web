@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { AlertCircle, RefreshCw, ShieldX, SearchX, Receipt, UserPlus, Users, Plus, Trash2, PenLine, Scan } from "lucide-react";
 import { toast } from "sonner";
@@ -21,7 +22,7 @@ import {
 import { useAuth } from "@/auth/AuthContext";
 import { useTrip, useDeleteTrip } from "@/hooks/useTrips";
 import { useParticipants, useInviteParticipant, useRemoveParticipant } from "@/hooks/useParticipants";
-import { useExpenses, useDeleteExpense } from "@/hooks/useExpenses";
+import { useExpenses, useDeleteExpense, useScanQuota } from "@/hooks/useExpenses";
 import type { Expense } from "@/types/expense";
 import { TripHeader } from "@/components/trip-details/TripHeader";
 import { ParticipantCard } from "@/components/trip-details/ParticipantCard";
@@ -37,6 +38,7 @@ export const TripDetailsPage = () => {
     const { tripId } = useParams<{ tripId: string }>();
     const navigate = useNavigate();
     const { squadfishUser } = useAuth();
+    const queryClient = useQueryClient();
 
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -65,6 +67,8 @@ export const TripDetailsPage = () => {
         isLoading: expensesLoading,
     } = useExpenses(tripId!);
 
+    const { data: scanQuota } = useScanQuota();
+
 
 
     // --- Mutations ---
@@ -85,8 +89,14 @@ export const TripDetailsPage = () => {
 
     // --- Callbacks (must be before early returns to satisfy Rules of Hooks) ---
     const handleScanReceipt = useCallback(() => {
+        if (scanQuota && !scanQuota.canScan) {
+            toast.error("Scan limit reached", {
+                description: `You've used all ${scanQuota.userLimit} receipt scans for today. Resets at ${scanQuota.resetsAt}.`,
+            });
+            return;
+        }
         receiptInputRef.current?.click();
-    }, []);
+    }, [scanQuota]);
 
     const handleReceiptFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -103,8 +113,9 @@ export const TripDetailsPage = () => {
                 useWebWorker: true,
             };
             const compressedFile = await imageCompression(file, options);
-            
+
             const result = await scanReceipt(compressedFile);
+            queryClient.invalidateQueries({ queryKey: ["scanQuota"] });
             setScannedData(result);
             setExpenseToEdit(undefined);
             setAddExpenseModalOpen(true);
@@ -261,6 +272,7 @@ export const TripDetailsPage = () => {
                 onAddExpense={handleAddExpense}
                 onScanReceipt={handleScanReceipt}
                 onDeleteTrip={() => setDeleteDialogOpen(true)}
+                scansRemaining={scanQuota?.userRemaining}
             />
 
 
@@ -411,14 +423,14 @@ export const TripDetailsPage = () => {
                             <Plus className="h-6 w-6" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" sideOffset={10}>
+                    <DropdownMenuContent align="end" sideOffset={10} className="min-w-36">
                         <DropdownMenuItem onClick={handleAddExpense}>
                             <PenLine className="mr-2 h-4 w-4" />
                             <span>Add Expense</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleScanReceipt}>
                             <Scan className="mr-2 h-4 w-4" />
-                            <span>Scan Receipt</span>
+                            <span>Scan Receipt{scanQuota ? ` (${scanQuota.userRemaining} left)` : ""}</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
